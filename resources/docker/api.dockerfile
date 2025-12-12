@@ -8,4 +8,6 @@ RUN pip install uv --no-cache-dir
 
 COPY . .
 
+EXPOSE 8000
+
 ENTRYPOINT ["sh", "sleep infinity"]

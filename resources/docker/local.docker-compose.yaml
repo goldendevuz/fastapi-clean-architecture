@@ -37,6 +37,7 @@ services:
       - database
     ports:
       - "8000:8000"
+    entrypoint: ["uv", "run", "uvicorn", "src.main:app", "--reload", "--port", "8000", "--host", "0.0.0.0"]
     restart: unless-stopped
 
   database:
