@@ -667,9 +667,6 @@ wheels = [
 name = "python-clear-architecture-and-ddd-template"
 version = "0.1.0"
 source = { virtual = "." }
-dependencies = [
-    { name = "faststream" },
-]
 
 [package.dev-dependencies]
 app = [
@@ -690,7 +687,6 @@ local = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "faststream", extras = ["rabbitmq"], specifier = ">=0.6.4" }]
 
 [package.metadata.requires-dev]
 app = [
