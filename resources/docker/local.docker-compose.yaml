@@ -21,8 +21,8 @@ networks:
     driver: bridge
 
 volumes:
-  database: {}
-  nats: {}
+  database:
+  nats:
   
 services:
   api:
