@@ -8,4 +8,6 @@ RUN pip install --no-cache-dir uv \
     && uv venv \
     && uv sync --group linters
 
+COPY . .
+
 CMD ["tail", "-f", "/dev/null"]

@@ -9,23 +9,6 @@ runs:
       with:
         version: "latest"
 
-    - name: Create .env file for docker-compose
-      run: |
-        cat <<EOF > .env
-        DEBUG=false
-        LOG_LEVEL=INFO
-        DATABASE_USER=postgres
-        DATABASE_PASSWORD=postgres
-        DATABASE_HOST=database
-        DATABASE_PORT=5432
-        DATABASE_NAME=postgres
-        BROKER_USER=broker
-        BROKER_PASSWORD=broker
-        BROKER_HOST=broker
-        BROKER_PORT=5672
-        EOF
-      shell: bash
-
     - name: Build Docker Images
       run: docker compose -f docker-compose.yaml -f ./resources/docker/ci.docker-compose.yaml build
       shell: bash
@@ -33,7 +16,4 @@ runs:
     - name: Up Docker Containers
       run: docker compose -f docker-compose.yaml -f ./resources/docker/ci.docker-compose.yaml up
       shell: bash
-
-    - name: Run Migrations
-      run: docker compose -f docker-compose.yaml -f ./resources/docker/ci.docker-compose.yaml exec app uv run alembic migrate head
-      shell: bash
+ 

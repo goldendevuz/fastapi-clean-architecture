@@ -7,53 +7,6 @@ services:
     build:
       dockerfile: "./resources/docker/ci.app.dockerfile"
       context: "."
-    environment: 
-      DEBUG: ${DEBUG}
-      LOG_LEVEL: ${LOG_LEVEL}
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      DATABASE_HOST: ${DATABASE_HOST}
-      DATABASE_PORT: ${DATABASE_PORT}
-      DATABASE_NAME: ${DATABASE_NAME}
-      BROKER_USER: ${BROKER_USER}
-      BROKER_PASSWORD: ${BROKER_PASSWORD}
-      BROKER_HOST: ${BROKER_HOST}
-      BROKER_PORT: ${BROKER_PORT}
-    volumes: 
-      - ./alembic:/app/alembic
-      - ./resources/logs:/app/resources/logs
-      - ./src:/app/src
     networks:
       - app
-    depends_on:
-      - database
-      - broker
-    ports:
-      - "8000:8000"
-    restart: no
-
-  database:
-    image: postgres:17.6
-    networks:
-      - app
-    environment:
-      - POSTGRES_DB=${DATABASE_NAME}
-      - POSTGRES_USER=${DATABASE_USER}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${DATABASE_USER}", "-d", "${DATABASE_NAME}"]
-      interval: 7s
-      timeout: 5s
-      retries: 2
-    restart: no
-
-  broker:
-    image: rabbitmq:3.13-management
-    networks:
-      - app
-    environment:
-      - RABBITMQ_DEFAULT_USER=${BROKER_USER}
-      - RABBITMQ_DEFAULT_PASS=${BROKER_PASSWORD}
-    volumes:
-      - ./resources/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
     restart: no
