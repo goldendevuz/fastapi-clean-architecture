@@ -30,7 +30,7 @@ services:
       - broker
     ports:
       - "8000:8000"
-    restart: unless-stopped
+    restart: no
 
   database:
     image: postgres:17.6
@@ -45,7 +45,7 @@ services:
       interval: 7s
       timeout: 5s
       retries: 2
-    restart: unless-stopped
+    restart: no
 
   broker:
     image: rabbitmq:3.13-management
@@ -56,4 +56,4 @@ services:
       - RABBITMQ_DEFAULT_PASS=${BROKER_PASSWORD}
     volumes:
       - ./resources/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
-    restart: unless-stopped
+    restart: no

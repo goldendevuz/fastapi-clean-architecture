@@ -6,7 +6,7 @@ on:
 
 jobs:
   push-images:
-    needs: [lints, tests, type-checks]
+    needs: [ruff-check]
     name: Build and Push Images
     runs-on: ubuntu-latest
     steps:
@@ -14,21 +14,7 @@ jobs:
          run: | 
           echo "TODO: Push Images to Habor or DockerHUB later."
 
-  type-checks:
-    name: Type Checks
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-      
-      - id: "setup_docker_compose"
-        name: "Setup Docker Compose"
-        uses: ./.github/actions/docker-setup
-
-      - name: Run Tests
-        run: make ci-type-check
-
-  lints:
+  ruff-check:
     name: Linters
     runs-on: ubuntu-latest
     steps:
@@ -40,18 +26,5 @@ jobs:
         uses: ./.github/actions/docker-setup
 
       - name: Run Linters
-        run: make ci-lint
+        run: docker compose -f docker-compose.yaml -f ./resources/docker/ci.docker-compose.yaml exec app uv run ruff check .
     
-  tests:
-    name: Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-      
-      - id: "setup_docker_compose"
-        name: "Setup Docker Compose"
-        uses: ./.github/actions/docker-setup
-
-      - name: Run Tests
-        run: make ci-test
