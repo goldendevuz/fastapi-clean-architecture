@@ -6,6 +6,6 @@ COPY uv.lock pyproject.toml ./
 
 RUN pip install --no-cache-dir uv \
     && uv venv \
-    && uv sync --group app --group linters
+    && uv sync --group linters
 
-ENTRYPOINT ["sh", "sleep infinity"]
+CMD ["tail", "-f", "/dev/null"]
