@@ -2,8 +2,12 @@ name: CI
 
 on:
   push:
-    # branches:
-    #   - main
+    paths-ignore:
+    - 'docs/**'
+    - './resources/logs/**'
+    - 'README.md'
+    branches:
+      - main
 
 jobs:
   push-images:
@@ -59,8 +63,6 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
 
       - name: Setup UV
         uses: astral-sh/setup-uv@v7
