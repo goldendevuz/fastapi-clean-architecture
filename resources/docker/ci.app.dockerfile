@@ -2,6 +2,8 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
+USER app
+
 COPY uv.lock pyproject.toml .python-version ./
 
 RUN pip install --no-cache-dir uv 
@@ -14,8 +16,7 @@ COPY . .
 COPY --chown=app:app . .
 
 # ---- runtime ----
-USER app
 
 EXPOSE 8000
 
-ENTRYPOINT ["uv", "run", "uvicorn", "src.main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
+ENTRYPOINT ["sh", "sleep infinity"]
