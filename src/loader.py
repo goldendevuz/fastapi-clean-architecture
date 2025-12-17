@@ -1,11 +1,12 @@
+import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-import logging
 
 from fastapi import FastAPI
 
 from src.application.ports.clock import Clock
 from src.application.unit_of_work import UnitOfWork
+from src.config import settings
 from src.core.application.event_bus import EventBus
 from src.core.container import Container
 from src.infrastructure.adapters.utc_clock import UTCClock
@@ -13,8 +14,6 @@ from src.infrastructure.rabbitmq_event_bus import RabbitMQEventBus
 from src.infrastructure.sqlalchemy.setup import new_session
 from src.infrastructure.unit_of_work import SQLAlchemyUnitOfWork
 from src.presentation import api
-
-from src.config import settings
 
 logger = logging.getLogger(__name__)
 

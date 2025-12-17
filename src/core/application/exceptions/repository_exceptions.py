@@ -1,4 +1,4 @@
-from src.kernel.application.application_exception import ApplicationException
+from src.core.application.application_exception import ApplicationException
 
 
 class RepositoryException(ApplicationException):

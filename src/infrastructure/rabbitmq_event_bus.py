@@ -1,15 +1,14 @@
-from typing import Type
 import logging
 from collections.abc import Awaitable, Callable
 from dataclasses import asdict, fields, is_dataclass
 from typing import cast
 
-from faststream.rabbit import RabbitBroker, RabbitExchange, ExchangeType, RabbitQueue
 from faststream import FastStream
+from faststream.rabbit import ExchangeType, RabbitBroker, RabbitExchange, RabbitQueue
 from faststream.types import SendableMessage
 from pydantic import BaseModel, create_model
 
-from src.core.application.event_bus import EventBus, DomainEventT
+from src.core.application.event_bus import DomainEventT, EventBus
 from src.core.application.exceptions.event_bus_exceptions import (
     EventBusAlreadyClosedError,
     EventBusAlreadyStartedError,
@@ -65,7 +64,7 @@ class RabbitMQEventBus(EventBus):
 
     def subscribe(
             self, 
-            event: Type[DomainEventT], 
+            event: type[DomainEventT], 
             handler: Callable[[DomainEventT, Container], Awaitable[None]],
         ) -> None:
 
@@ -83,11 +82,11 @@ class RabbitMQEventBus(EventBus):
             await handler(domain_event, self._container)
 
     @staticmethod
-    def _pydantic_model_from_dataclass(event_type: Type[DomainEvent]) -> Type[BaseModel]:
+    def _pydantic_model_from_dataclass(event_type: type[DomainEvent]) -> type[BaseModel]:
         if not is_dataclass(event_type):
             raise TypeError(f"{event_type.__name__} is not a dataclass")
 
-        fields: dict[str, Type[object]] = {}
+        fields: dict[str, type[object]] = {}
         for name, annotation in event_type.__annotations__.items():
             fields[name] = annotation
 
@@ -96,7 +95,7 @@ class RabbitMQEventBus(EventBus):
         )
     
     @staticmethod
-    def _get_event_name(event_type: Type[DomainEvent]) -> str:
+    def _get_event_name(event_type: type[DomainEvent]) -> str:
         if not is_dataclass(event_type):
             raise TypeError(f"{event_type.__name__} is not a dataclass")
         

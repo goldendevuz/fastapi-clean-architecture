@@ -1,8 +1,9 @@
 from collections.abc import Awaitable, Callable
-from typing import TypeVar, cast, Type
+from typing import TypeVar, cast
+
 from src.core.exceptions.container_exceptions import (
-    InterfaceNotRegisteredError, 
-    InterfaceAlreadyRegisteredError
+    InterfaceAlreadyRegisteredError,
+    InterfaceNotRegisteredError,
 )
 
 T = TypeVar("T")
@@ -15,23 +16,27 @@ class Container:
     """
 
     def __init__(self) -> None:
-        self._async_factories: dict[Type[object], Callable[[], Awaitable[object]]] = {}
-        self._sync_factories: dict[Type[object], Callable[[], object]] = {}
-        self._singletons: dict[Type[object], object] = {}
+        self._async_factories: dict[type[object], Callable[[], Awaitable[object]]] = {}
+        self._sync_factories: dict[type[object], Callable[[], object]] = {}
+        self._singletons: dict[type[object], object] = {}
 
-    def register_sync_factory(self, interface: Type[T], factory: Callable[[], T]) -> None:
+    def register_sync_factory(self, interface: type[T], factory: Callable[[], T]) -> None:
         self._check_not_registered(interface)
         self._sync_factories[interface] = factory
 
-    def register_async_factory(self, interface: Type[T], factory: Callable[[], Awaitable[T]]) -> None:
+    def register_async_factory(
+            self, 
+            interface: type[T], 
+            factory: Callable[[], Awaitable[T]]
+        ) -> None:
         self._check_not_registered(interface)
         self._async_factories[interface] = factory
 
-    def register_singleton(self, interface: Type[T], singleton: T) -> None:
+    def register_singleton(self, interface: type[T], singleton: T) -> None:
         self._check_not_registered(interface)
         self._singletons[interface] = singleton
 
-    async def resolve(self, interface: Type[T]) -> T:
+    async def resolve(self, interface: type[T]) -> T:
         if interface in self._async_factories:
             factory = cast(
                 Callable[[], Awaitable[T]], 
@@ -56,7 +61,7 @@ class Container:
             f"`register_factory()` before resolving."
         )
     
-    def _check_not_registered(self, interface: Type[object]) -> None:
+    def _check_not_registered(self, interface: type[object]) -> None:
         error_template = (
             "Interface already has been register to the container as an {name}: {interfacename}"
         )

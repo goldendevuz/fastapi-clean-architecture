@@ -6,7 +6,7 @@ COPY uv.lock pyproject.toml .python-version ./
 
 RUN pip install --no-cache-dir uv 
 
-RUN uv sync --group app --group local
+RUN uv sync --group app --group tests --group linters
 
 COPY . .
 

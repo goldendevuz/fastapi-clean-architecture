@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from src.kernel.domain.domain_entity import DomainEntity
-from src.kernel.domain.domain_event import DomainEvent
+from src.core.domain.domain_entity import DomainEntity
+from src.core.domain.domain_event import DomainEvent
 
 
 class Aggregate(DomainEntity):

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from collections.abc import Awaitable, Callable
-from typing import Type, TypeVar
+from typing import TypeVar
 
 from src.core.container import Container
 from src.core.domain.domain_event import DomainEvent
@@ -16,7 +16,7 @@ class EventBus(ABC):
     @abstractmethod
     def subscribe(
             self, 
-            event: Type[DomainEventT], 
+            event: type[DomainEventT], 
             handler: Callable[[DomainEventT, Container], Awaitable[None]]
         ) -> None: ...
 

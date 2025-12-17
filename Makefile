@@ -36,6 +36,9 @@ lint-fix:
 lint-fix-unsafe:
 	uv run ruff check . --fix --unsafe-fixes
 
+lint-type:
+	uv run pyright
+
 # Dependency Commands
 sync:
 	uv sync --all-groups
