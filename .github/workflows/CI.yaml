@@ -6,7 +6,7 @@ on:
 
 jobs:
   push-images:
-    needs: [lint, test]
+    needs: [test, lint, lint-type]
     name: Build and Push Images
     runs-on: ubuntu-latest
     steps:
@@ -92,8 +92,7 @@ jobs:
           python-version: 3.12
 
       - name: Install Dependencies
-        run: uv sync --group linters
+        run: uv sync --group linters --group app
 
       - name: Run Linters
         run: uv run pyright
-        
